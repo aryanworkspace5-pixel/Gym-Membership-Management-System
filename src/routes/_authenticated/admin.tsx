@@ -113,7 +113,7 @@ function AdminLayout() {
               return (
                 <Link
                   key={n.to}
-                  to={n.to}
+                  to={n.to as any}
                   activeOptions={{ exact: n.exact }}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
                 >
