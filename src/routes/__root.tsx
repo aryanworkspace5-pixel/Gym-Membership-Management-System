@@ -137,17 +137,19 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouter().state.location.pathname;
+  const isApp = pathname.startsWith("/admin") || pathname.startsWith("/auth");
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1 pb-20 md:pb-0">
+        {!isApp && <Header />}
+        <main className={isApp ? "flex-1" : "flex-1 pb-20 md:pb-0"}>
           <Outlet />
         </main>
-        <Footer />
+        {!isApp && <Footer />}
       </div>
-      <FloatingCTAs />
+      {!isApp && <FloatingCTAs />}
       <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );
