@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      attendance: {
+        Row: {
+          check_in: string
+          check_out: string | null
+          created_at: string
+          id: string
+          member_id: string
+          notes: string | null
+          source: Database["public"]["Enums"]["attendance_source"]
+        }
+        Insert: {
+          check_in?: string
+          check_out?: string | null
+          created_at?: string
+          id?: string
+          member_id: string
+          notes?: string | null
+          source?: Database["public"]["Enums"]["attendance_source"]
+        }
+        Update: {
+          check_in?: string
+          check_out?: string | null
+          created_at?: string
+          id?: string
+          member_id?: string
+          notes?: string | null
+          source?: Database["public"]["Enums"]["attendance_source"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           created_at: string
@@ -56,6 +94,176 @@ export type Database = {
         }
         Relationships: []
       }
+      members: {
+        Row: {
+          address: string | null
+          created_at: string
+          date_of_birth: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          full_name: string
+          gender: Database["public"]["Enums"]["gender_type"] | null
+          id: string
+          join_date: string
+          notes: string | null
+          phone: string
+          photo_url: string | null
+          plan_end_date: string | null
+          plan_id: string | null
+          plan_start_date: string | null
+          status: Database["public"]["Enums"]["member_status"]
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name: string
+          gender?: Database["public"]["Enums"]["gender_type"] | null
+          id?: string
+          join_date?: string
+          notes?: string | null
+          phone: string
+          photo_url?: string | null
+          plan_end_date?: string | null
+          plan_id?: string | null
+          plan_start_date?: string | null
+          status?: Database["public"]["Enums"]["member_status"]
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name?: string
+          gender?: Database["public"]["Enums"]["gender_type"] | null
+          id?: string
+          join_date?: string
+          notes?: string | null
+          phone?: string
+          photo_url?: string | null
+          plan_end_date?: string | null
+          plan_id?: string | null
+          plan_start_date?: string | null
+          status?: Database["public"]["Enums"]["member_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "members_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      membership_plans: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          duration_months: number
+          features: Json
+          id: string
+          is_active: boolean
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          duration_months: number
+          features?: Json
+          id?: string
+          is_active?: boolean
+          name: string
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          duration_months?: number
+          features?: Json
+          id?: string
+          is_active?: boolean
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          member_id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          notes: string | null
+          payment_date: string
+          period_from: string | null
+          period_to: string | null
+          plan_id: string | null
+          recorded_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          member_id: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          notes?: string | null
+          payment_date?: string
+          period_from?: string | null
+          period_to?: string | null
+          plan_id?: string | null
+          recorded_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          member_id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          notes?: string | null
+          payment_date?: string
+          period_from?: string | null
+          period_to?: string | null
+          plan_id?: string | null
+          recorded_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -92,8 +300,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "member"
+      attendance_source: "manual" | "qr" | "self"
+      gender_type: "male" | "female" | "other" | "prefer_not_to_say"
       lead_source: "contact" | "free_trial" | "newsletter" | "quick_inquiry"
       lead_status: "new" | "contacted" | "converted" | "closed"
+      member_status: "active" | "inactive" | "expired" | "frozen"
+      payment_method: "cash" | "card" | "upi" | "bank_transfer" | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -222,8 +434,12 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "member"],
+      attendance_source: ["manual", "qr", "self"],
+      gender_type: ["male", "female", "other", "prefer_not_to_say"],
       lead_source: ["contact", "free_trial", "newsletter", "quick_inquiry"],
       lead_status: ["new", "contacted", "converted", "closed"],
+      member_status: ["active", "inactive", "expired", "frozen"],
+      payment_method: ["cash", "card", "upi", "bank_transfer", "other"],
     },
   },
 } as const
