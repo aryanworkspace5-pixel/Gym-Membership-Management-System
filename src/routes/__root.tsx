@@ -11,22 +11,27 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { FloatingCTAs } from "@/components/site/FloatingCTAs";
+import { Toaster } from "@/components/ui/sonner";
+import { site } from "@/lib/site-config";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <p className="eyebrow justify-center mb-3">404</p>
+        <h1 className="h-section">Page Not Found</h1>
+        <p className="mt-3 text-muted-foreground">
+          The page you're looking for doesn't exist or has moved. Let's get you back on track.
         </p>
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90"
           >
-            Go home
+            Back to Home
           </Link>
         </div>
       </div>
@@ -42,29 +47,19 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
+        <h1 className="h-section">Something Went Wrong</h1>
+        <p className="mt-3 text-muted-foreground">Try refreshing or head back home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            onClick={() => { router.invalidate(); reset(); }}
+            className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90"
           >
-            Try again
+            Try Again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
+          <a href="/" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-5 py-3 text-sm font-bold uppercase tracking-wider hover:bg-accent">
+            Go Home
           </a>
         </div>
       </div>
@@ -77,19 +72,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "V11 Gym — Best Gym in Roorkee | Strength, Cardio & Fitness Training" },
+      { name: "description", content: "Transform your body at V11 Gym, Roorkee's premier fitness destination. Modern equipment, expert coaching, and proven programs for strength, weight loss, and athletic performance." },
+      { name: "author", content: "V11 Gym" },
+      { name: "theme-color", content: "#E63946" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:site_name", content: "V11 Gym" },
+      { property: "og:title", content: "V11 Gym — Best Gym in Roorkee" },
+      { property: "og:description", content: "Premium strength, cardio, weight loss & athletic training in Roorkee. Book a free trial today." },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "V11 Gym — Best Gym in Roorkee" },
+      { name: "twitter:description", content: "Premium strength, cardio, weight loss & athletic training in Roorkee." },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" },
+      { rel: "icon", type: "image/svg+xml", href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23E63946'/%3E%3Ctext x='16' y='22' font-family='Arial Black,sans-serif' font-size='16' font-weight='900' fill='white' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E" },
+    ],
+    scripts: [
       {
-        rel: "stylesheet",
-        href: appCss,
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HealthClub",
+          name: site.name,
+          description: "Premium gym and fitness center in Roorkee offering strength training, cardio, weight loss programs, and athletic conditioning.",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: site.address,
+            addressLocality: site.city,
+            addressRegion: site.region,
+            addressCountry: "IN",
+          },
+          telephone: site.phone,
+          email: site.email,
+          openingHours: "Mo-Sa 05:00-22:00, Su 06:00-12:00",
+          priceRange: "₹₹",
+          areaServed: { "@type": "City", name: "Roorkee" },
+        }),
       },
     ],
   }),
@@ -118,8 +140,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1 pb-20 md:pb-0">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+      <FloatingCTAs />
+      <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );
 }
