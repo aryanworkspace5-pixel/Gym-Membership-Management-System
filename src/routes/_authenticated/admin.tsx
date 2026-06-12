@@ -41,14 +41,15 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const nav: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/members", label: "Members", icon: Users },
   { to: "/admin/plans", label: "Plans", icon: CreditCard },
   { to: "/admin/payments", label: "Payments", icon: Receipt },
   { to: "/admin/attendance", label: "Attendance", icon: ClipboardCheck },
   { to: "/admin/leads", label: "Leads", icon: Inbox },
-] as const;
+];
 
 function AdminLayout() {
   const navigate = useNavigate();
