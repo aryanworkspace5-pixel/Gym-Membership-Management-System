@@ -7,6 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Force a full-stack Nitro build when this repository is built outside
+  // Lovable (for example, by Vercel). This preserves SSR, server functions,
+  // and direct access to every TanStack route instead of producing a static
+  // bundle that returns 404 for deep links.
+  nitro: { preset: "vercel" },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
